@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en" class="bg-gray-950 text-white antialiased">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Velure AI - AI Photo Editor</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://rsms.me/inter/inter.css');
+        html { font-family: 'Inter', sans-serif; }
+
+        .gradient-text {
+            background-image: linear-gradient(to right, #6EE7B7, #3B82F6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .cta-button {
+            background: linear-gradient(to right, #8B5CF6, #EC4899);
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(236, 72, 153, 0.4);
+        }
+
+        .card {
+            background: linear-gradient(145deg, rgba(31, 41, 55, 0.5), rgba(17, 24, 39, 0.5));
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(75, 85, 99, 0.3);
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .bg-glowing-blob {
+            position: absolute;
+            width: 50vw;
+            height: 50vh;
+            background: radial-gradient(circle, rgba(139, 92, 246, 0.4), transparent 70%);
+            z-index: 0;
+            filter: blur(80px);
+            animation: moveBlob 15s infinite alternate;
+            opacity: 0.6;
+        }
+
+        @keyframes moveBlob {
+            0% { transform: translate(-20%, -20%) scale(1); }
+            100% { transform: translate(20%, 20%) scale(1.1); }
+        }
+
+        /* Before/After Comparison Styling */
+        #comparison-container {
+            position: relative;
+            max-width: 840px; /* Reduced from 1200px (30% smaller) */
+            width: 100%;
+            margin: 0 auto;
+        }
+        
+        /* Responsive adjustments for mobile */
+        @media (max-width: 1024px) {
+            #comparison-container {
+                max-width: 100%;
+            }
+        }
+        
+        #comparison-container img {
+            width: 100%;
+            height: auto;
+            display: block;
+            object-fit: cover;
+            border-radius: 1rem;
+            transition: opacity 0.3s ease, transform 0.5s ease;
+        }
+        
+        /* Hover effects for images */
+        .group:hover img {
+            transform: scale(1.05);
+        }
+        
+        /* Navigation button styles */
+        .navigation-btn {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+        
+        .navigation-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: scale(1.1);
+        }
+    </style>
+</head>
+<body class="relative overflow-x-hidden">
+
+    <!-- Glowing blob for background effect -->
+    <div class="bg-glowing-blob top-0 left-0"></div>
+    <div class="bg-glowing-blob bottom-0 right-0" style="animation-delay: -7.5s; background: radial-gradient(circle, rgba(236, 72, 153, 0.4), transparent 70%);"></div>
+
+    <!-- Header -->
+    <header class="relative z-10 py-6">
+        <div class="container mx-auto flex justify-between items-center px-4 md:px-8">
+            <div class="text-2xl font-bold">Velure AI</div>
+            <nav class="hidden md:flex space-x-6">
+                <a href="#features" class="hover:text-gray-400 transition-colors">Features</a>
+                <a href="#pricing" class="hover:text-gray-400 transition-colors">Pricing</a>
+                <a href="#testimonials" class="hover:text-gray-400 transition-colors">Testimonials</a>
+                <a href="#faq" class="hover:text-gray-400 transition-colors">FAQ</a>
+            </nav>
+            <a href="#pricing" class="cta-button px-4 py-2 rounded-full font-semibold">Get Started</a>
+        </div>
+    </header>
+
+    <main class="relative z-10">
+        <!-- Hero Section -->
+        <section class="text-center py-20 md:py-32">
+            <div class="container mx-auto px-4 md:px-8">
+                <h1 class="text-4xl md:text-6xl font-extrabold max-w-4xl mx-auto leading-tight">
+                    Your Photos,
+                    <span class="gradient-text block mt-2">Elevated by AI.</span>
+                </h1>
+                <p class="mt-4 md:mt-6 text-lg text-gray-400 max-w-2xl mx-auto">
+                    Effortlessly transform your images with intelligent editing tools,
+                    from simple touch-ups to complex artistic effects.
+                </p>
+                <div class="mt-8 md:mt-12 flex justify-center space-x-4">
+                    <a href="#pricing" class="cta-button px-8 py-3 rounded-full font-bold text-white">Start Editing Now</a>
+                    <a href="#features" class="px-8 py-3 border-2 border-gray-600 text-gray-200 rounded-full font-bold hover:bg-gray-800 transition-colors">Learn More</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Feature Showcase Section -->
+        <section id="features" class="container mx-auto px-4 md:px-8 py-16">
+            <h2 class="text-center text-3xl md:text-4xl font-bold">Features that will redefine your photos.</h2>
+            <div class="mt-12 grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Feature Card 1 -->
+                <div class="card p-6 rounded-3xl">
+                    <div class="bg-purple-500 w-12 h-12 rounded-full flex items-center justify-center text-xl mb-4">✨</div>
+                    <h3 class="text-xl font-semibold">AI-Powered Retouching</h3>
+                    <p class="mt-2 text-gray-400">
+                        Automatically remove blemishes, smooth skin, and perfect portraits with a single click.
+                    </p>
+                </div>
+                <!-- Feature Card 2 -->
+                <div class="card p-6 rounded-3xl">
+                    <div class="bg-blue-500 w-12 h-12 rounded-full flex items-center justify-center text-xl mb-4">🖼️</div>
+                    <h3 class="text-xl font-semibold">Intelligent Background Removal</h3>
+                    <p class="mt-2 text-gray-400">
+                        Create stunning cutouts and isolate subjects with unparalleled precision.
+                    </p>
+                </div>
+                <!-- Feature Card 3 -->
+                <div class="card p-6 rounded-3xl">
+                    <div class="bg-pink-500 w-12 h-12 rounded-full flex items-center justify-center text-xl mb-4">🎨</div>
+                    <h3 class="text-xl font-semibold">Creative Style Transfer</h3>
+                    <p class="mt-2 text-gray-400">
+                        Apply artistic styles from famous paintings to your photos, transforming them into unique masterpieces.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Before & After Comparison Section -->
+        <section id="before-after" class="container mx-auto px-4 md:px-8 py-16">
+            <h2 class="text-center text-3xl md:text-4xl font-bold">See the magic happen.</h2>
+            <p class="mt-4 text-center text-lg text-gray-400 max-w-2xl mx-auto">
+                Compare the original photos with their AI-enhanced versions.
+            </p>
+            
+            <div class="mt-12 relative">
+                <!-- Navigation Arrows -->
+                <button id="prev-btn" class="absolute left-2 top-1/2 transform -translate-y-1/2 z-20 bg-white/10 backdrop-blur-md rounded-full p-3 hover:bg-white/20 transition-all duration-200 group border border-white/20">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white group-hover:scale-110 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                    </svg>
+                </button>
+                
+                <button id="next-btn" class="absolute right-2 top-1/2 transform -translate-y-1/2 z-20 bg-white/10 backdrop-blur-md rounded-full p-3 hover:bg-white/20 transition-all duration-200 group border border-white/20">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white group-hover:scale-110 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                    </svg>
+                </button>
+
+                <!-- Image Comparison Container -->
+                <div id="comparison-container" class="max-w-4xl mx-auto">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                        <!-- Original Image -->
+                        <div class="relative group">
+                            <div class="absolute -top-3 left-3 bg-red-500 text-white px-3 py-1 rounded-full text-xs font-semibold z-10">
+                                Original
+                            </div>
+                            <div class="relative overflow-hidden rounded-xl shadow-xl">
+                                <img id="before-image" src="./original-photo-1.jpg" alt="Original Photo" class="w-full h-auto object-cover transition-transform duration-500 group-hover:scale-105">
+                                <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                            </div>
+                        </div>
+                        
+                        <!-- Edited Image -->
+                        <div class="relative group">
+                            <div class="absolute -top-3 left-3 bg-green-500 text-white px-3 py-1 rounded-full text-xs font-semibold z-10">
+                                AI Enhanced
+                            </div>
+                            <div class="relative overflow-hidden rounded-xl shadow-xl">
+                                <img id="after-image" src="./edited-photo-1.png" alt="AI Edited Photo" class="w-full h-auto object-cover transition-transform duration-500 group-hover:scale-105">
+                                <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Image Counter -->
+                    <div class="text-center mt-6">
+                        <div class="inline-flex items-center space-x-2 bg-white/10 backdrop-blur-md rounded-full px-4 py-2">
+                            <span id="current-image" class="text-white font-semibold">1</span>
+                            <span class="text-gray-400">/</span>
+                            <span id="total-images" class="text-gray-400">3</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Pricing Section -->
+        <section id="pricing" class="container mx-auto px-4 md:px-8 py-16">
+            <h2 class="text-center text-3xl md:text-4xl font-bold">Simple, one-time payment.</h2>
+            <p class="mt-4 text-center text-lg text-gray-400 max-w-2xl mx-auto">
+                No subscriptions, no hidden fees. Get unlimited access to all features with a single purchase.
+            </p>
+            <div class="mt-12 flex justify-center">
+                <div class="card p-8 rounded-3xl max-w-sm w-full text-center">
+                    <h3 class="text-2xl font-bold">Lifetime Access</h3>
+                    <p class="mt-4 text-6xl font-extrabold">$9</p>
+                    <p class="mt-2 text-gray-400">One-time payment</p>
+                    <ul class="mt-8 space-y-4 text-left text-gray-300">
+                        <li class="flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-green-400 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                            </svg>
+                            AI-Powered Retouching
+                        </li>
+                        <li class="flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-green-400 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                            </svg>
+                            Intelligent Background Removal
+                        </li>
+                        <li class="flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-green-400 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                            </svg>
+                            Creative Style Transfer
+                        </li>
+                        <li class="flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-green-400 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                            </svg>
+                            Unlimited Photo Edits
+                        </li>
+                    </ul>
+                    <a href="#" class="mt-8 cta-button px-8 py-3 rounded-full font-bold text-white block w-full">Access Now</a>
+                    <!-- NOTE: Replace the '#' in the href above with your Gumroad listing URL. -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Why people love us Section -->
+        <section id="testimonials" class="bg-gray-900 py-16">
+            <div class="container mx-auto px-4 md:px-8">
+                <h2 class="text-center text-3xl md:text-4xl font-bold mb-12">Why people love Velure AI</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <!-- Testimonial Card 1 -->
+                    <div class="card p-6 rounded-3xl">
+                        <p class="text-gray-300 italic">"Velure AI has completely changed my workflow. The results are incredible, and it saves me so much time!"</p>
+                        <div class="mt-4 flex items-center">
+                            <div class="w-10 h-10 bg-gray-600 rounded-full mr-3"></div>
+                            <div>
+                                <div class="font-semibold">Jane Doe</div>
+                                <div class="text-sm text-gray-400">Professional Photographer</div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Testimonial Card 2 -->
+                    <div class="card p-6 rounded-3xl">
+                        <p class="text-gray-300 italic">"I'm not a pro, but this app makes my photos look like they were edited by one. It's so easy to use!"</p>
+                        <div class="mt-4 flex items-center">
+                            <div class="w-10 h-10 bg-gray-600 rounded-full mr-3"></div>
+                            <div>
+                                <div class="font-semibold">John Smith</div>
+                                <div class="text-sm text-gray-400">Amateur Enthusiast</div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Testimonial Card 3 -->
+                    <div class="card p-6 rounded-3xl">
+                        <p class="text-gray-300 italic">"The artistic style transfer is my favorite feature. It's so much fun to see my photos become works of art."</p>
+                        <div class="mt-4 flex items-center">
+                            <div class="w-10 h-10 bg-gray-600 rounded-full mr-3"></div>
+                            <div>
+                                <div class="font-semibold">Emily Chen</div>
+                                <div class="text-sm text-gray-400">Graphic Designer</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FAQ Section -->
+        <section id="faq" class="container mx-auto px-4 md:px-8 py-16">
+            <h2 class="text-center text-3xl md:text-4xl font-bold mb-12">Frequently Asked Questions</h2>
+            <div class="max-w-3xl mx-auto space-y-4">
+                <div class="card p-6 rounded-2xl">
+                    <h3 class="text-xl font-semibold">How does the AI photo editor work?</h3>
+                    <p class="mt-2 text-gray-400">
+                        Our AI models analyze your images to intelligently identify objects, subjects, and context, allowing for precise and automated edits.
+                    </p>
+                </div>
+                <div class="card p-6 rounded-2xl">
+                    <h3 class="text-xl font-semibold">Is my data secure?</h3>
+                    <p class="mt-2 text-gray-400">
+                        Yes, we prioritize your privacy. All images are processed securely and are never shared or stored beyond the necessary time for editing.
+                    </p>
+                </div>
+                <div class="card p-6 rounded-2xl">
+                    <h3 class="text-xl font-semibold">What kind of photos can I edit?</h3>
+                    <p class="mt-2 text-gray-400">
+                        Velure AI works with a wide range of image formats and is optimized for both portraits and landscape photography.
+                    </p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-gray-400 py-12">
+        <div class="container mx-auto px-4 md:px-8">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-6 md:mb-0 text-xl font-bold text-white">Velure AI</div>
+                <div class="flex space-x-6">
+                    <a href="#" class="hover:text-white transition-colors">Privacy Policy</a>
+                    <a href="#" class="hover:text-white transition-colors">Terms of Service</a>
+                    <a href="#" class="hover:text-white transition-colors">Contact</a>
+                </div>
+            </div>
+            <div class="text-center mt-8 text-sm">
+                &copy; 2024 Velure AI. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const beforeImage = document.getElementById('before-image');
+        const afterImage = document.getElementById('after-image');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const currentImageSpan = document.getElementById('current-image');
+        const totalImagesSpan = document.getElementById('total-images');
+
+        let currentImageIndex = 0;
+
+        // Image pairs for demonstration. You can replace these with your own!
+        const imagePairs = [
+            {
+                // Replace these paths with your actual image files
+                // Place your images in the same directory as this HTML file
+                before: "./original-photo-1.jpg",  // Your original photo 1
+                after: "./edited-photo-1.png"     // Your AI edited photo 1
+            },
+            {
+                before: "./original-photo-2.jpg",  // Your original photo 2
+                after: "./edited-photo-2.png"     // Your AI edited photo 2
+            },
+            {
+                before: "./original-photo-3.jpg",  // Your original photo 3
+                after: "./edited-photo-3.png"     // Your AI edited photo 3
+            }
+        ];
+
+        // Function to update the images and counter
+        function updateImages() {
+            const currentPair = imagePairs[currentImageIndex];
+            
+            // Add error handling for image loading
+            beforeImage.onerror = function() {
+                console.error('Failed to load before image:', currentPair.before);
+            };
+            beforeImage.onload = function() {
+                console.log('Successfully loaded before image:', currentPair.before);
+            };
+            
+            afterImage.onerror = function() {
+                console.error('Failed to load after image:', currentPair.after);
+            };
+            afterImage.onload = function() {
+                console.log('Successfully loaded after image:', currentPair.after);
+            };
+            
+            // Update images with fade effect
+            beforeImage.style.opacity = '0';
+            afterImage.style.opacity = '0';
+            
+            setTimeout(() => {
+                beforeImage.src = currentPair.before;
+                afterImage.src = currentPair.after;
+                
+                beforeImage.style.opacity = '1';
+                afterImage.style.opacity = '1';
+            }, 200);
+            
+            // Update counter
+            currentImageSpan.textContent = currentImageIndex + 1;
+            totalImagesSpan.textContent = imagePairs.length;
+        }
+
+        // Event listeners for navigation arrows
+        prevBtn.addEventListener('click', () => {
+            currentImageIndex = (currentImageIndex - 1 + imagePairs.length) % imagePairs.length;
+            updateImages();
+        });
+
+        nextBtn.addEventListener('click', () => {
+            currentImageIndex = (currentImageIndex + 1) % imagePairs.length;
+            updateImages();
+        });
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowLeft') {
+                prevBtn.click();
+            } else if (e.key === 'ArrowRight') {
+                nextBtn.click();
+            }
+        });
+
+        // Initial image load
+        window.onload = updateImages;
+
+    </script>
+</body>
+</html>
