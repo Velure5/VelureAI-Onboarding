@@ -56,16 +56,9 @@
         /* Before/After Comparison Styling */
         #comparison-container {
             position: relative;
-            max-width: 840px; /* Reduced from 1200px (30% smaller) */
+            max-width: 840px;
             width: 100%;
             margin: 0 auto;
-        }
-        
-        /* Responsive adjustments for mobile */
-        @media (max-width: 1024px) {
-            #comparison-container {
-                max-width: 100%;
-            }
         }
         
         #comparison-container img {
@@ -94,6 +87,56 @@
             background: rgba(255, 255, 255, 0.2);
             transform: scale(1.1);
         }
+
+        /* Mobile menu styles */
+        .mobile-menu {
+            transform: translateX(-100%);
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .mobile-menu.open {
+            transform: translateX(0);
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .bg-glowing-blob {
+                width: 80vw;
+                height: 40vh;
+                filter: blur(60px);
+            }
+            
+            #comparison-container {
+                max-width: 100%;
+            }
+            
+            .navigation-btn {
+                padding: 0.5rem;
+            }
+            
+            .navigation-btn svg {
+                width: 1rem;
+                height: 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .bg-glowing-blob {
+                width: 100vw;
+                height: 30vh;
+                filter: blur(40px);
+            }
+        }
+
+        /* Touch-friendly button sizes for mobile */
+        @media (max-width: 768px) {
+            .cta-button {
+                min-height: 48px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+        }
     </style>
 </head>
 <body class="relative overflow-x-hidden">
@@ -103,63 +146,93 @@
     <div class="bg-glowing-blob bottom-0 right-0" style="animation-delay: -7.5s; background: radial-gradient(circle, rgba(236, 72, 153, 0.4), transparent 70%);"></div>
 
     <!-- Header -->
-    <header class="relative z-10 py-6">
+    <header class="relative z-10 py-4 md:py-6">
         <div class="container mx-auto flex justify-between items-center px-4 md:px-8">
-            <div class="text-2xl font-bold">Velure AI</div>
+            <div class="text-xl md:text-2xl font-bold">Velure AI</div>
+            
+            <!-- Desktop Navigation -->
             <nav class="hidden md:flex space-x-6">
                 <a href="#features" class="hover:text-gray-400 transition-colors">Features</a>
                 <a href="#pricing" class="hover:text-gray-400 transition-colors">Pricing</a>
                 <a href="#testimonials" class="hover:text-gray-400 transition-colors">Testimonials</a>
                 <a href="#faq" class="hover:text-gray-400 transition-colors">FAQ</a>
             </nav>
-            <a href="#pricing" class="cta-button px-4 py-2 rounded-full font-semibold">Get Started</a>
+            
+            <!-- Desktop CTA Button -->
+            <a href="#pricing" class="hidden md:block cta-button px-4 py-2 rounded-full font-semibold">Get Started</a>
+            
+            <!-- Mobile Menu Button -->
+            <button id="mobile-menu-btn" class="md:hidden p-2 rounded-lg hover:bg-gray-800 transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+            </button>
+        </div>
+        
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="mobile-menu fixed top-0 left-0 w-full h-full bg-gray-950/95 backdrop-blur-md z-50 md:hidden">
+            <div class="flex justify-between items-center p-4 border-b border-gray-800">
+                <div class="text-xl font-bold">Velure AI</div>
+                <button id="close-menu-btn" class="p-2 rounded-lg hover:bg-gray-800 transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+            <nav class="flex flex-col p-4 space-y-4">
+                <a href="#features" class="text-lg py-3 hover:text-gray-400 transition-colors border-b border-gray-800">Features</a>
+                <a href="#pricing" class="text-lg py-3 hover:text-gray-400 transition-colors border-b border-gray-800">Pricing</a>
+                <a href="#testimonials" class="text-lg py-3 hover:text-gray-400 transition-colors border-b border-gray-800">Testimonials</a>
+                <a href="#faq" class="text-lg py-3 hover:text-gray-400 transition-colors border-b border-gray-800">FAQ</a>
+                <a href="#pricing" class="cta-button px-6 py-3 rounded-full font-semibold text-center mt-6">Get Started</a>
+            </nav>
         </div>
     </header>
 
     <main class="relative z-10">
         <!-- Hero Section -->
-        <section class="text-center py-20 md:py-32">
+        <section class="text-center py-16 md:py-20 lg:py-32">
             <div class="container mx-auto px-4 md:px-8">
-                <h1 class="text-4xl md:text-6xl font-extrabold max-w-4xl mx-auto leading-tight">
+                <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold max-w-4xl mx-auto leading-tight">
                     Your Photos,
                     <span class="gradient-text block mt-2">Elevated by AI.</span>
                 </h1>
-                <p class="mt-4 md:mt-6 text-lg text-gray-400 max-w-2xl mx-auto">
+                <p class="mt-4 md:mt-6 text-base md:text-lg text-gray-400 max-w-2xl mx-auto px-4">
                     Effortlessly transform your images with intelligent editing tools,
                     from simple touch-ups to complex artistic effects.
                 </p>
-                <div class="mt-8 md:mt-12 flex justify-center space-x-4">
-                    <a href="#pricing" class="cta-button px-8 py-3 rounded-full font-bold text-white">Start Editing Now</a>
-                    <a href="#features" class="px-8 py-3 border-2 border-gray-600 text-gray-200 rounded-full font-bold hover:bg-gray-800 transition-colors">Learn More</a>
+                <div class="mt-8 md:mt-12 flex flex-col sm:flex-row justify-center items-center space-y-4 sm:space-y-0 sm:space-x-4 px-4">
+                    <a href="#pricing" class="cta-button px-6 md:px-8 py-3 rounded-full font-bold text-white w-full sm:w-auto">Start Editing Now</a>
+                    <a href="#features" class="px-6 md:px-8 py-3 border-2 border-gray-600 text-gray-200 rounded-full font-bold hover:bg-gray-800 transition-colors w-full sm:w-auto">Learn More</a>
                 </div>
             </div>
         </section>
 
         <!-- Feature Showcase Section -->
-        <section id="features" class="container mx-auto px-4 md:px-8 py-16">
-            <h2 class="text-center text-3xl md:text-4xl font-bold">Features that will redefine your photos.</h2>
-            <div class="mt-12 grid grid-cols-1 md:grid-cols-3 gap-8">
+        <section id="features" class="container mx-auto px-4 md:px-8 py-12 md:py-16">
+            <h2 class="text-center text-2xl sm:text-3xl md:text-4xl font-bold px-4">Features that will redefine your photos.</h2>
+            <div class="mt-8 md:mt-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
                 <!-- Feature Card 1 -->
                 <div class="card p-6 rounded-3xl">
                     <div class="bg-purple-500 w-12 h-12 rounded-full flex items-center justify-center text-xl mb-4">✨</div>
-                    <h3 class="text-xl font-semibold">AI-Powered Retouching</h3>
-                    <p class="mt-2 text-gray-400">
+                    <h3 class="text-lg md:text-xl font-semibold">AI-Powered Retouching</h3>
+                    <p class="mt-2 text-gray-400 text-sm md:text-base">
                         Automatically remove blemishes, smooth skin, and perfect portraits with a single click.
                     </p>
                 </div>
                 <!-- Feature Card 2 -->
                 <div class="card p-6 rounded-3xl">
                     <div class="bg-blue-500 w-12 h-12 rounded-full flex items-center justify-center text-xl mb-4">🖼️</div>
-                    <h3 class="text-xl font-semibold">Intelligent Background Removal</h3>
-                    <p class="mt-2 text-gray-400">
+                    <h3 class="text-lg md:text-xl font-semibold">Intelligent Background Removal</h3>
+                    <p class="mt-2 text-gray-400 text-sm md:text-base">
                         Create stunning cutouts and isolate subjects with unparalleled precision.
                     </p>
                 </div>
                 <!-- Feature Card 3 -->
                 <div class="card p-6 rounded-3xl">
                     <div class="bg-pink-500 w-12 h-12 rounded-full flex items-center justify-center text-xl mb-4">🎨</div>
-                    <h3 class="text-xl font-semibold">Creative Style Transfer</h3>
-                    <p class="mt-2 text-gray-400">
+                    <h3 class="text-lg md:text-xl font-semibold">Creative Style Transfer</h3>
+                    <p class="mt-2 text-gray-400 text-sm md:text-base">
                         Apply artistic styles from famous paintings to your photos, transforming them into unique masterpieces.
                     </p>
                 </div>
@@ -167,32 +240,32 @@
         </section>
 
         <!-- Before & After Comparison Section -->
-        <section id="before-after" class="container mx-auto px-4 md:px-8 py-16">
-            <h2 class="text-center text-3xl md:text-4xl font-bold">See the magic happen.</h2>
-            <p class="mt-4 text-center text-lg text-gray-400 max-w-2xl mx-auto">
+        <section id="before-after" class="container mx-auto px-4 md:px-8 py-12 md:py-16">
+            <h2 class="text-center text-2xl sm:text-3xl md:text-4xl font-bold px-4">See the magic happen.</h2>
+            <p class="mt-4 text-center text-base md:text-lg text-gray-400 max-w-2xl mx-auto px-4">
                 Compare the original photos with their AI-enhanced versions.
             </p>
             
-            <div class="mt-12 relative">
+            <div class="mt-8 md:mt-12 relative">
                 <!-- Navigation Arrows -->
-                <button id="prev-btn" class="absolute left-2 top-1/2 transform -translate-y-1/2 z-20 bg-white/10 backdrop-blur-md rounded-full p-3 hover:bg-white/20 transition-all duration-200 group border border-white/20">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white group-hover:scale-110 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <button id="prev-btn" class="absolute left-2 top-1/2 transform -translate-y-1/2 z-20 bg-white/10 backdrop-blur-md rounded-full p-2 md:p-3 hover:bg-white/20 transition-all duration-200 group border border-white/20">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 md:h-5 md:w-5 text-white group-hover:scale-110 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
                     </svg>
                 </button>
                 
-                <button id="next-btn" class="absolute right-2 top-1/2 transform -translate-y-1/2 z-20 bg-white/10 backdrop-blur-md rounded-full p-3 hover:bg-white/20 transition-all duration-200 group border border-white/20">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white group-hover:scale-110 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <button id="next-btn" class="absolute right-2 top-1/2 transform -translate-y-1/2 z-20 bg-white/10 backdrop-blur-md rounded-full p-2 md:p-3 hover:bg-white/20 transition-all duration-200 group border border-white/20">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 md:h-5 md:w-5 text-white group-hover:scale-110 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
                     </svg>
                 </button>
 
                 <!-- Image Comparison Container -->
                 <div id="comparison-container" class="max-w-4xl mx-auto">
-                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6">
                         <!-- Original Image -->
                         <div class="relative group">
-                            <div class="absolute -top-3 left-3 bg-red-500 text-white px-3 py-1 rounded-full text-xs font-semibold z-10">
+                            <div class="absolute -top-3 left-3 bg-red-500 text-white px-2 md:px-3 py-1 rounded-full text-xs font-semibold z-10">
                                 Original
                             </div>
                             <div class="relative overflow-hidden rounded-xl shadow-xl">
@@ -203,7 +276,7 @@
                         
                         <!-- Edited Image -->
                         <div class="relative group">
-                            <div class="absolute -top-3 left-3 bg-green-500 text-white px-3 py-1 rounded-full text-xs font-semibold z-10">
+                            <div class="absolute -top-3 left-3 bg-green-500 text-white px-2 md:px-3 py-1 rounded-full text-xs font-semibold z-10">
                                 AI Enhanced
                             </div>
                             <div class="relative overflow-hidden rounded-xl shadow-xl">
@@ -214,8 +287,8 @@
                     </div>
                     
                     <!-- Image Counter -->
-                    <div class="text-center mt-6">
-                        <div class="inline-flex items-center space-x-2 bg-white/10 backdrop-blur-md rounded-full px-4 py-2">
+                    <div class="text-center mt-4 md:mt-6">
+                        <div class="inline-flex items-center space-x-2 bg-white/10 backdrop-blur-md rounded-full px-3 md:px-4 py-2">
                             <span id="current-image" class="text-white font-semibold">1</span>
                             <span class="text-gray-400">/</span>
                             <span id="total-images" class="text-gray-400">3</span>
@@ -226,83 +299,82 @@
         </section>
 
         <!-- Pricing Section -->
-        <section id="pricing" class="container mx-auto px-4 md:px-8 py-16">
-            <h2 class="text-center text-3xl md:text-4xl font-bold">Simple, one-time payment.</h2>
-            <p class="mt-4 text-center text-lg text-gray-400 max-w-2xl mx-auto">
+        <section id="pricing" class="container mx-auto px-4 md:px-8 py-12 md:py-16">
+            <h2 class="text-center text-2xl sm:text-3xl md:text-4xl font-bold px-4">Simple, one-time payment.</h2>
+            <p class="mt-4 text-center text-base md:text-lg text-gray-400 max-w-2xl mx-auto px-4">
                 No subscriptions, no hidden fees. Get unlimited access to all features with a single purchase.
             </p>
-            <div class="mt-12 flex justify-center">
-                <div class="card p-8 rounded-3xl max-w-sm w-full text-center">
-                    <h3 class="text-2xl font-bold">Lifetime Access</h3>
-                    <p class="mt-4 text-6xl font-extrabold">$9</p>
+            <div class="mt-8 md:mt-12 flex justify-center">
+                <div class="card p-6 md:p-8 rounded-3xl max-w-sm w-full text-center">
+                    <h3 class="text-xl md:text-2xl font-bold">Lifetime Access</h3>
+                    <p class="mt-4 text-5xl md:text-6xl font-extrabold">$9</p>
                     <p class="mt-2 text-gray-400">One-time payment</p>
-                    <ul class="mt-8 space-y-4 text-left text-gray-300">
+                    <ul class="mt-6 md:mt-8 space-y-3 md:space-y-4 text-left text-gray-300 text-sm md:text-base">
                         <li class="flex items-center">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-green-400 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 md:h-6 md:w-6 text-green-400 mr-2 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
                             </svg>
                             AI-Powered Retouching
                         </li>
                         <li class="flex items-center">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-green-400 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 md:h-6 md:w-6 text-green-400 mr-2 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
                             </svg>
                             Intelligent Background Removal
                         </li>
                         <li class="flex items-center">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-green-400 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 md:h-6 md:w-6 text-green-400 mr-2 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
                             </svg>
                             Creative Style Transfer
                         </li>
                         <li class="flex items-center">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-green-400 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 md:h-6 md:w-6 text-green-400 mr-2 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
                             </svg>
                             Unlimited Photo Edits
                         </li>
                     </ul>
-                    <a href="#" class="mt-8 cta-button px-8 py-3 rounded-full font-bold text-white block w-full">Access Now</a>
-                    <!-- NOTE: Replace the '#' in the href above with your Gumroad listing URL. -->
+                    <a href="https://veluremedia.gumroad.com/l/Velure-AI" class="mt-6 md:mt-8 cta-button px-6 md:px-8 py-3 rounded-full font-bold text-white block w-full">Access Now</a>
                 </div>
             </div>
         </section>
 
         <!-- Why people love us Section -->
-        <section id="testimonials" class="bg-gray-900 py-16">
+        <section id="testimonials" class="bg-gray-900 py-12 md:py-16">
             <div class="container mx-auto px-4 md:px-8">
-                <h2 class="text-center text-3xl md:text-4xl font-bold mb-12">Why people love Velure AI</h2>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <h2 class="text-center text-2xl sm:text-3xl md:text-4xl font-bold mb-8 md:mb-12 px-4">Why people love Velure AI</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
                     <!-- Testimonial Card 1 -->
                     <div class="card p-6 rounded-3xl">
-                        <p class="text-gray-300 italic">"Velure AI has completely changed my workflow. The results are incredible, and it saves me so much time!"</p>
+                        <p class="text-gray-300 italic text-sm md:text-base">"Velure AI has completely changed my workflow. The results are incredible, and it saves me so much time!"</p>
                         <div class="mt-4 flex items-center">
-                            <div class="w-10 h-10 bg-gray-600 rounded-full mr-3"></div>
+                            <div class="w-8 h-8 md:w-10 md:h-10 bg-gray-600 rounded-full mr-3 flex-shrink-0"></div>
                             <div>
-                                <div class="font-semibold">Jane Doe</div>
-                                <div class="text-sm text-gray-400">Professional Photographer</div>
+                                <div class="font-semibold text-sm md:text-base">Jane Doe</div>
+                                <div class="text-xs md:text-sm text-gray-400">Professional Photographer</div>
                             </div>
                         </div>
                     </div>
                     <!-- Testimonial Card 2 -->
                     <div class="card p-6 rounded-3xl">
-                        <p class="text-gray-300 italic">"I'm not a pro, but this app makes my photos look like they were edited by one. It's so easy to use!"</p>
+                        <p class="text-gray-300 italic text-sm md:text-base">"I'm not a pro, but this app makes my photos look like they were edited by one. It's so easy to use!"</p>
                         <div class="mt-4 flex items-center">
-                            <div class="w-10 h-10 bg-gray-600 rounded-full mr-3"></div>
+                            <div class="w-8 h-8 md:w-10 md:h-10 bg-gray-600 rounded-full mr-3 flex-shrink-0"></div>
                             <div>
-                                <div class="font-semibold">John Smith</div>
-                                <div class="text-sm text-gray-400">Amateur Enthusiast</div>
+                                <div class="font-semibold text-sm md:text-base">John Smith</div>
+                                <div class="text-xs md:text-sm text-gray-400">Amateur Enthusiast</div>
                             </div>
                         </div>
                     </div>
                     <!-- Testimonial Card 3 -->
                     <div class="card p-6 rounded-3xl">
-                        <p class="text-gray-300 italic">"The artistic style transfer is my favorite feature. It's so much fun to see my photos become works of art."</p>
+                        <p class="text-gray-300 italic text-sm md:text-base">"The artistic style transfer is my favorite feature. It's so much fun to see my photos become works of art."</p>
                         <div class="mt-4 flex items-center">
-                            <div class="w-10 h-10 bg-gray-600 rounded-full mr-3"></div>
+                            <div class="w-8 h-8 md:w-10 md:h-10 bg-gray-600 rounded-full mr-3 flex-shrink-0"></div>
                             <div>
-                                <div class="font-semibold">Emily Chen</div>
-                                <div class="text-sm text-gray-400">Graphic Designer</div>
+                                <div class="font-semibold text-sm md:text-base">Emily Chen</div>
+                                <div class="text-xs md:text-sm text-gray-400">Graphic Designer</div>
                             </div>
                         </div>
                     </div>
@@ -311,24 +383,24 @@
         </section>
 
         <!-- FAQ Section -->
-        <section id="faq" class="container mx-auto px-4 md:px-8 py-16">
-            <h2 class="text-center text-3xl md:text-4xl font-bold mb-12">Frequently Asked Questions</h2>
+        <section id="faq" class="container mx-auto px-4 md:px-8 py-12 md:py-16">
+            <h2 class="text-center text-2xl sm:text-3xl md:text-4xl font-bold mb-8 md:mb-12 px-4">Frequently Asked Questions</h2>
             <div class="max-w-3xl mx-auto space-y-4">
                 <div class="card p-6 rounded-2xl">
-                    <h3 class="text-xl font-semibold">How does the AI photo editor work?</h3>
-                    <p class="mt-2 text-gray-400">
+                    <h3 class="text-lg md:text-xl font-semibold">How does the AI photo editor work?</h3>
+                    <p class="mt-2 text-gray-400 text-sm md:text-base">
                         Our AI models analyze your images to intelligently identify objects, subjects, and context, allowing for precise and automated edits.
                     </p>
                 </div>
                 <div class="card p-6 rounded-2xl">
-                    <h3 class="text-xl font-semibold">Is my data secure?</h3>
-                    <p class="mt-2 text-gray-400">
+                    <h3 class="text-lg md:text-xl font-semibold">Is my data secure?</h3>
+                    <p class="mt-2 text-gray-400 text-sm md:text-base">
                         Yes, we prioritize your privacy. All images are processed securely and are never shared or stored beyond the necessary time for editing.
                     </p>
                 </div>
                 <div class="card p-6 rounded-2xl">
-                    <h3 class="text-xl font-semibold">What kind of photos can I edit?</h3>
-                    <p class="mt-2 text-gray-400">
+                    <h3 class="text-lg md:text-xl font-semibold">What kind of photos can I edit?</h3>
+                    <p class="mt-2 text-gray-400 text-sm md:text-base">
                         Velure AI works with a wide range of image formats and is optimized for both portraits and landscape photography.
                     </p>
                 </div>
@@ -337,23 +409,52 @@
     </main>
 
     <!-- Footer -->
-    <footer class="bg-gray-900 text-gray-400 py-12">
+    <footer class="bg-gray-900 text-gray-400 py-8 md:py-12">
         <div class="container mx-auto px-4 md:px-8">
             <div class="flex flex-col md:flex-row justify-between items-center">
-                <div class="mb-6 md:mb-0 text-xl font-bold text-white">Velure AI</div>
-                <div class="flex space-x-6">
-                    <a href="#" class="hover:text-white transition-colors">Privacy Policy</a>
-                    <a href="#" class="hover:text-white transition-colors">Terms of Service</a>
-                    <a href="#" class="hover:text-white transition-colors">Contact</a>
+                <div class="mb-4 md:mb-0 text-lg md:text-xl font-bold text-white">Velure AI</div>
+                <div class="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-6 text-center sm:text-left">
+                    <a href="#" class="hover:text-white transition-colors text-sm md:text-base">Privacy Policy</a>
+                    <a href="#" class="hover:text-white transition-colors text-sm md:text-base">Terms of Service</a>
+                    <a href="#" class="hover:text-white transition-colors text-sm md:text-base">Contact</a>
                 </div>
             </div>
-            <div class="text-center mt-8 text-sm">
+            <div class="text-center mt-6 md:mt-8 text-xs md:text-sm">
                 &copy; 2024 Velure AI. All rights reserved.
             </div>
         </div>
     </footer>
 
     <script>
+        // Mobile menu functionality
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const closeMenuBtn = document.getElementById('close-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.add('open');
+        });
+
+        closeMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.remove('open');
+        });
+
+        // Close menu when clicking on a link
+        const mobileMenuLinks = mobileMenu.querySelectorAll('a');
+        mobileMenuLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.remove('open');
+            });
+        });
+
+        // Close menu when clicking outside
+        mobileMenu.addEventListener('click', (e) => {
+            if (e.target === mobileMenu) {
+                mobileMenu.classList.remove('open');
+            }
+        });
+
+        // Image comparison functionality
         const beforeImage = document.getElementById('before-image');
         const afterImage = document.getElementById('after-image');
         const prevBtn = document.getElementById('prev-btn');
@@ -437,9 +538,52 @@
             }
         });
 
+        // Touch/swipe support for mobile
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        const comparisonContainer = document.getElementById('comparison-container');
+        
+        comparisonContainer.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+        });
+
+        comparisonContainer.addEventListener('touchend', (e) => {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+        });
+
+        function handleSwipe() {
+            const swipeThreshold = 50;
+            const diff = touchStartX - touchEndX;
+            
+            if (Math.abs(diff) > swipeThreshold) {
+                if (diff > 0) {
+                    // Swipe left - next image
+                    nextBtn.click();
+                } else {
+                    // Swipe right - previous image
+                    prevBtn.click();
+                }
+            }
+        }
+
         // Initial image load
         window.onload = updateImages;
 
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
     </script>
 </body>
 </html>
