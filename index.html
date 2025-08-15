@@ -305,9 +305,23 @@
                 No subscriptions, no hidden fees. Get unlimited access to all features with a single purchase.
             </p>
             <div class="mt-8 md:mt-12 flex justify-center">
-                <div class="card p-6 md:p-8 rounded-3xl max-w-sm w-full text-center">
+                <div class="card p-6 md:p-8 rounded-3xl max-w-sm w-full text-center relative">
+                    <!-- Limited Time Offer Badge -->
+                    <div class="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-red-500 to-pink-500 text-white px-4 py-2 rounded-full text-sm font-bold shadow-lg">
+                        🔥 LIMITED TIME OFFER - 25% OFF
+                    </div>
+                    
                     <h3 class="text-xl md:text-2xl font-bold">Lifetime Access</h3>
-                    <p class="mt-4 text-5xl md:text-6xl font-extrabold">$9</p>
+                    
+                    <!-- Pricing Display -->
+                    <div class="mt-4">
+                        <div class="flex items-center justify-center space-x-3">
+                            <span class="text-2xl md:text-3xl font-bold text-gray-400 line-through">$12</span>
+                            <span class="text-5xl md:text-6xl font-extrabold text-green-400">$9</span>
+                        </div>
+                        <p class="mt-2 text-sm md:text-base text-green-400 font-semibold">Save $3 today!</p>
+                    </div>
+                    
                     <p class="mt-2 text-gray-400">One-time payment</p>
                     <ul class="mt-6 md:mt-8 space-y-3 md:space-y-4 text-left text-gray-300 text-sm md:text-base">
                         <li class="flex items-center">
@@ -463,6 +477,7 @@
         const totalImagesSpan = document.getElementById('total-images');
 
         let currentImageIndex = 0;
+        let isTransitioning = false; // Prevent multiple transitions
 
         // Image pairs for demonstration. You can replace these with your own!
         const imagePairs = [
@@ -482,75 +497,131 @@
             }
         ];
 
-        // Function to update the images and counter
+        // Function to update the images and counter with perfect synchronization
         function updateImages() {
+            if (isTransitioning) return; // Prevent multiple transitions
+            
+            isTransitioning = true;
             const currentPair = imagePairs[currentImageIndex];
             
-            // Add error handling for image loading
-            beforeImage.onerror = function() {
+            // Create new image elements for smooth loading
+            const newBeforeImg = new Image();
+            const newAfterImg = new Image();
+            
+            let beforeLoaded = false;
+            let afterLoaded = false;
+            
+            // Load before image
+            newBeforeImg.onload = function() {
+                beforeLoaded = true;
+                if (afterLoaded) {
+                    completeTransition();
+                }
+            };
+            
+            newBeforeImg.onerror = function() {
                 console.error('Failed to load before image:', currentPair.before);
-            };
-            beforeImage.onload = function() {
-                console.log('Successfully loaded before image:', currentPair.before);
+                beforeLoaded = true;
+                if (afterLoaded) {
+                    completeTransition();
+                }
             };
             
-            afterImage.onerror = function() {
+            // Load after image
+            newAfterImg.onload = function() {
+                afterLoaded = true;
+                if (beforeLoaded) {
+                    completeTransition();
+                }
+            };
+            
+            newAfterImg.onerror = function() {
                 console.error('Failed to load after image:', currentPair.after);
-            };
-            afterImage.onload = function() {
-                console.log('Successfully loaded after image:', currentPair.after);
+                afterLoaded = true;
+                if (beforeLoaded) {
+                    completeTransition();
+                }
             };
             
-            // Update images with fade effect
-            beforeImage.style.opacity = '0';
-            afterImage.style.opacity = '0';
+            // Start loading both images
+            newBeforeImg.src = currentPair.before;
+            newAfterImg.src = currentPair.after;
             
-            setTimeout(() => {
-                beforeImage.src = currentPair.before;
-                afterImage.src = currentPair.after;
+            function completeTransition() {
+                // Fade out current images
+                beforeImage.style.transition = 'opacity 0.3s ease';
+                afterImage.style.transition = 'opacity 0.3s ease';
+                beforeImage.style.opacity = '0';
+                afterImage.style.opacity = '0';
                 
-                beforeImage.style.opacity = '1';
-                afterImage.style.opacity = '1';
-            }, 200);
+                // Wait for fade out, then swap images
+                setTimeout(() => {
+                    // Update image sources
+                    beforeImage.src = newBeforeImg.src;
+                    afterImage.src = newAfterImg.src;
+                    
+                    // Fade in new images
+                    beforeImage.style.opacity = '1';
+                    afterImage.style.opacity = '1';
+                    
+                    // Update counter
+                    currentImageSpan.textContent = currentImageIndex + 1;
+                    totalImagesSpan.textContent = imagePairs.length;
+                    
+                    // Reset transition state
+                    setTimeout(() => {
+                        isTransitioning = false;
+                    }, 300);
+                }, 300);
+            }
+        }
+
+        // Debounced navigation function to prevent rapid clicking
+        function navigateImages(direction) {
+            if (isTransitioning) return;
             
-            // Update counter
-            currentImageSpan.textContent = currentImageIndex + 1;
-            totalImagesSpan.textContent = imagePairs.length;
+            if (direction === 'next') {
+                currentImageIndex = (currentImageIndex + 1) % imagePairs.length;
+            } else {
+                currentImageIndex = (currentImageIndex - 1 + imagePairs.length) % imagePairs.length;
+            }
+            
+            updateImages();
         }
 
         // Event listeners for navigation arrows
-        prevBtn.addEventListener('click', () => {
-            currentImageIndex = (currentImageIndex - 1 + imagePairs.length) % imagePairs.length;
-            updateImages();
-        });
-
-        nextBtn.addEventListener('click', () => {
-            currentImageIndex = (currentImageIndex + 1) % imagePairs.length;
-            updateImages();
-        });
+        prevBtn.addEventListener('click', () => navigateImages('prev'));
+        nextBtn.addEventListener('click', () => navigateImages('next'));
 
         // Keyboard navigation
         document.addEventListener('keydown', (e) => {
             if (e.key === 'ArrowLeft') {
-                prevBtn.click();
+                navigateImages('prev');
             } else if (e.key === 'ArrowRight') {
-                nextBtn.click();
+                navigateImages('next');
             }
         });
 
         // Touch/swipe support for mobile
         let touchStartX = 0;
         let touchEndX = 0;
+        let touchStartTime = 0;
 
         const comparisonContainer = document.getElementById('comparison-container');
         
         comparisonContainer.addEventListener('touchstart', (e) => {
             touchStartX = e.changedTouches[0].screenX;
+            touchStartTime = Date.now();
         });
 
         comparisonContainer.addEventListener('touchend', (e) => {
             touchEndX = e.changedTouches[0].screenX;
-            handleSwipe();
+            const touchDuration = Date.now() - touchStartTime;
+            
+            // Only handle swipes that are quick and intentional
+            if (touchDuration < 300) {
+                handleSwipe();
+            }
         });
 
         function handleSwipe() {
@@ -560,16 +631,29 @@
             if (Math.abs(diff) > swipeThreshold) {
                 if (diff > 0) {
                     // Swipe left - next image
-                    nextBtn.click();
+                    navigateImages('next');
                 } else {
                     // Swipe right - previous image
-                    prevBtn.click();
+                    navigateImages('prev');
                 }
             }
         }
 
-        // Initial image load
-        window.onload = updateImages;
+        // Preload all images for smooth transitions
+        function preloadImages() {
+            imagePairs.forEach(pair => {
+                const beforeImg = new Image();
+                const afterImg = new Image();
+                beforeImg.src = pair.before;
+                afterImg.src = pair.after;
+            });
+        }
+
+        // Initialize
+        window.onload = function() {
+            preloadImages();
+            updateImages();
+        };
 
         // Smooth scrolling for anchor links
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -587,3 +671,4 @@
     </script>
 </body>
 </html>
+
